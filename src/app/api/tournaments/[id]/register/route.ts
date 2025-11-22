@@ -20,10 +20,27 @@ export async function POST(
 
         await connectDB();
 
-        // Get user from database
-        const user = await User.findOne({ clerkId: userId });
+        // Get user from database or create if doesn't exist
+        let user = await User.findOne({ clerkId: userId });
+
         if (!user) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            // Auto-create user from Clerk data
+            const { currentUser } = await import('@clerk/nextjs/server');
+            const clerkUser = await currentUser();
+
+            if (!clerkUser) {
+                return NextResponse.json({ error: 'User not found' }, { status: 404 });
+            }
+
+            user = await User.create({
+                clerkId: userId,
+                email: clerkUser.emailAddresses[0]?.emailAddress || '',
+                name: clerkUser.firstName && clerkUser.lastName
+                    ? `${clerkUser.firstName} ${clerkUser.lastName}`
+                    : clerkUser.username || 'User',
+                role: 'user',
+                status: 'active',
+            });
         }
 
         // Check if user is banned
