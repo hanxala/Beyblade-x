@@ -14,6 +14,7 @@ const allTournaments = [
         maxParticipants: 64,
         status: 'upcoming' as const,
         prize: '₹50,000',
+        image: '/mumbai-championship.png',
     },
     {
         id: 'mock-tournament-2',
@@ -24,6 +25,7 @@ const allTournaments = [
         maxParticipants: 32,
         status: 'live' as const,
         prize: '₹35,000',
+        image: '/delhi-battle.png',
     },
     {
         id: 'mock-tournament-3',
@@ -34,6 +36,7 @@ const allTournaments = [
         maxParticipants: 48,
         status: 'upcoming' as const,
         prize: '₹40,000',
+        image: '/bangalore-cup.png',
     },
     {
         id: 'mock-tournament-4',
@@ -44,6 +47,7 @@ const allTournaments = [
         maxParticipants: 40,
         status: 'upcoming' as const,
         prize: '₹30,000',
+        image: '/hyderabad-masters.png',
     },
     {
         id: 'mock-tournament-5',
@@ -54,6 +58,7 @@ const allTournaments = [
         maxParticipants: 32,
         status: 'completed' as const,
         prize: '₹25,000',
+        image: '/pune-championship.png',
     },
     {
         id: 'mock-tournament-6',
@@ -64,6 +69,7 @@ const allTournaments = [
         maxParticipants: 48,
         status: 'upcoming' as const,
         prize: '₹35,000',
+        image: '/chennai-showdown.png',
     },
     {
         id: 'mock-tournament-7',
@@ -74,6 +80,7 @@ const allTournaments = [
         maxParticipants: 24,
         status: 'completed' as const,
         prize: '₹20,000',
+        image: '/kolkata-battle.png',
     },
     {
         id: 'mock-tournament-8',
@@ -84,6 +91,7 @@ const allTournaments = [
         maxParticipants: 40,
         status: 'upcoming' as const,
         prize: '₹28,000',
+        image: '/ahmedabad-clash.png',
     },
     {
         id: 'mock-tournament-9',
@@ -94,6 +102,7 @@ const allTournaments = [
         maxParticipants: 32,
         status: 'upcoming' as const,
         prize: '₹22,000',
+        image: '/jaipur-royale.png',
     },
 ];
 
