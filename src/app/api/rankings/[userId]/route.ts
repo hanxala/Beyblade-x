@@ -9,7 +9,7 @@ export async function PATCH(
     { params }: { params: Promise<{ userId: string }> }
 ) {
     try {
-        const { id } = await params;
+        const { userId } = await params;
         const admin = await isAdmin();
         if (!admin) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
