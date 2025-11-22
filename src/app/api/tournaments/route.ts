@@ -18,6 +18,9 @@ export async function GET(request: NextRequest) {
         const page = parseInt(searchParams.get('page') || '1');
         const limit = parseInt(searchParams.get('limit') || '20');
 
+        const sort = searchParams.get('sort') || 'desc';
+        const sortOrder = sort === 'asc' ? 1 : -1;
+
         // Build query
         const query: any = {};
         if (status && status !== 'all') {
@@ -35,7 +38,7 @@ export async function GET(request: NextRequest) {
 
         const [tournaments, total] = await Promise.all([
             Tournament.find(query)
-                .sort({ date: -1 })
+                .sort({ date: sortOrder as any })
                 .skip(skip)
                 .limit(limit)
                 .populate('createdBy', 'name email')

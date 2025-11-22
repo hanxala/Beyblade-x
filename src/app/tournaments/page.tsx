@@ -46,12 +46,22 @@ export default function TournamentsPage() {
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     };
 
-    const filteredTournaments = tournaments.filter(tournament => {
-        const matchesFilter = filter === 'all' || tournament.status === filter;
-        const matchesSearch = tournament.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            tournament.location.toLowerCase().includes(searchTerm.toLowerCase());
-        return matchesFilter && matchesSearch;
-    });
+    const filteredTournaments = tournaments
+        .filter(tournament => {
+            const matchesFilter = filter === 'all' || tournament.status === filter;
+            const matchesSearch = tournament.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                tournament.location.toLowerCase().includes(searchTerm.toLowerCase());
+            return matchesFilter && matchesSearch;
+        })
+        .sort((a, b) => {
+            const dateA = new Date(a.date).getTime();
+            const dateB = new Date(b.date).getTime();
+            // Ascending for upcoming, Descending for others
+            if (filter === 'upcoming') {
+                return dateA - dateB;
+            }
+            return dateB - dateA;
+        });
 
     return (
         <div className={styles.page}>

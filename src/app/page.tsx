@@ -36,7 +36,7 @@ export default function Home() {
 
   const fetchFeaturedTournaments = async () => {
     try {
-      const response = await fetch('/api/tournaments?limit=3&status=upcoming');
+      const response = await fetch('/api/tournaments?limit=3&status=upcoming&sort=asc');
       if (response.ok) {
         const data = await response.json();
         setFeaturedTournaments(data.tournaments || []);
