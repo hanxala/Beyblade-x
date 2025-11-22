@@ -9,12 +9,13 @@ import { deleteImage } from '@/lib/cloudinary';
 // GET /api/tournaments/[id] - Get tournament details
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         await connectDB();
 
-        const tournament = await Tournament.findById(params.id)
+        const tournament = await Tournament.findById(id)
             .populate('createdBy', 'name email')
             .lean();
 
@@ -24,7 +25,7 @@ export async function GET(
 
         // Get registrations count
         const registrationsCount = await Registration.countDocuments({
-            tournamentId: params.id,
+            tournamentId: id,
             status: { $ne: 'cancelled' },
         });
 
@@ -43,9 +44,10 @@ export async function GET(
 // PATCH /api/tournaments/[id] - Update tournament (admin only)
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const admin = await isAdmin();
         if (!admin) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -68,7 +70,7 @@ export async function PATCH(
         } = body;
 
         // Get existing tournament to check for image changes
-        const existingTournament = await Tournament.findById(params.id);
+        const existingTournament = await Tournament.findById(id);
         if (!existingTournament) {
             return NextResponse.json({ error: 'Tournament not found' }, { status: 404 });
         }
@@ -96,7 +98,7 @@ export async function PATCH(
         if (imagePublicId !== undefined) updateData.imagePublicId = imagePublicId;
 
         const tournament = await Tournament.findByIdAndUpdate(
-            params.id,
+            id,
             { $set: updateData },
             { new: true, runValidators: true }
         ).populate('createdBy', 'name email');
@@ -124,9 +126,10 @@ export async function PATCH(
 // DELETE /api/tournaments/[id] - Delete tournament (admin only)
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const admin = await isAdmin();
         if (!admin) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -136,7 +139,7 @@ export async function DELETE(
 
         // Check if tournament has registrations
         const registrationsCount = await Registration.countDocuments({
-            tournamentId: params.id,
+            tournamentId: id,
             status: { $ne: 'cancelled' },
         });
 
@@ -147,7 +150,7 @@ export async function DELETE(
             );
         }
 
-        const tournament = await Tournament.findById(params.id);
+        const tournament = await Tournament.findById(id);
 
         if (!tournament) {
             return NextResponse.json({ error: 'Tournament not found' }, { status: 404 });
@@ -163,10 +166,10 @@ export async function DELETE(
             }
         }
 
-        await Tournament.findByIdAndDelete(params.id);
+        await Tournament.findByIdAndDelete(id);
 
         // Delete all cancelled registrations
-        await Registration.deleteMany({ tournamentId: params.id });
+        await Registration.deleteMany({ tournamentId: id });
 
         return NextResponse.json({ message: 'Tournament deleted successfully' });
     } catch (error: any) {

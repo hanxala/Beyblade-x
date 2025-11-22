@@ -9,9 +9,10 @@ import Activity from '@/models/Activity';
 // POST /api/tournaments/[id]/register - Register for tournament
 export async function POST(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const { userId } = await auth();
         if (!userId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -31,7 +32,7 @@ export async function POST(
         }
 
         // Get tournament
-        const tournament = await Tournament.findById(params.id);
+        const tournament = await Tournament.findById(id);
         if (!tournament) {
             return NextResponse.json({ error: 'Tournament not found' }, { status: 404 });
         }
@@ -47,7 +48,7 @@ export async function POST(
 
         // Check if tournament is full
         const currentRegistrations = await Registration.countDocuments({
-            tournamentId: params.id,
+            tournamentId: id,
             status: { $ne: 'cancelled' },
         });
 
@@ -57,7 +58,7 @@ export async function POST(
 
         // Check if user is already registered
         const existingRegistration = await Registration.findOne({
-            tournamentId: params.id,
+            tournamentId: id,
             userId: user._id,
             status: { $ne: 'cancelled' },
         });
@@ -68,13 +69,13 @@ export async function POST(
 
         // Create registration
         const registration = await Registration.create({
-            tournamentId: params.id,
+            tournamentId: id,
             userId: user._id,
             status: 'registered',
         });
 
         // Update tournament participant count
-        await Tournament.findByIdAndUpdate(params.id, {
+        await Tournament.findByIdAndUpdate(id, {
             $set: { currentParticipants: currentRegistrations + 1 },
         });
 
@@ -96,9 +97,10 @@ export async function POST(
 // DELETE /api/tournaments/[id]/register - Cancel registration
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const { userId } = await auth();
         if (!userId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -114,7 +116,7 @@ export async function DELETE(
 
         // Find registration
         const registration = await Registration.findOne({
-            tournamentId: params.id,
+            tournamentId: id,
             userId: user._id,
             status: { $ne: 'cancelled' },
         });
@@ -129,11 +131,11 @@ export async function DELETE(
 
         // Update tournament participant count
         const currentRegistrations = await Registration.countDocuments({
-            tournamentId: params.id,
+            tournamentId: id,
             status: { $ne: 'cancelled' },
         });
 
-        await Tournament.findByIdAndUpdate(params.id, {
+        await Tournament.findByIdAndUpdate(id, {
             $set: { currentParticipants: currentRegistrations },
         });
 

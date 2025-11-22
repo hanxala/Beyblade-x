@@ -6,7 +6,7 @@ import { isAdmin } from '@/lib/admin-auth';
 // PATCH /api/announcements/[id] - Update announcement (admin only)
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const admin = await isAdmin();
@@ -14,6 +14,7 @@ export async function PATCH(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
+        const { id } = await params;
         await connectDB();
 
         const body = await request.json();
@@ -26,7 +27,7 @@ export async function PATCH(
         if (active !== undefined) updateData.active = active;
 
         const announcement = await Announcement.findByIdAndUpdate(
-            params.id,
+            id,
             { $set: updateData },
             { new: true, runValidators: true }
         ).populate('createdBy', 'name email');
@@ -45,7 +46,7 @@ export async function PATCH(
 // DELETE /api/announcements/[id] - Delete announcement (admin only)
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const admin = await isAdmin();
@@ -53,9 +54,10 @@ export async function DELETE(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
+        const { id } = await params;
         await connectDB();
 
-        const announcement = await Announcement.findByIdAndDelete(params.id);
+        const announcement = await Announcement.findByIdAndDelete(id);
 
         if (!announcement) {
             return NextResponse.json({ error: 'Announcement not found' }, { status: 404 });

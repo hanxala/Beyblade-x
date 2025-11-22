@@ -7,9 +7,10 @@ import { isAdmin } from '@/lib/admin-auth';
 // POST /api/users/[id]/ban - Ban user (admin only)
 export async function POST(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const admin = await isAdmin();
         if (!admin) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -18,7 +19,7 @@ export async function POST(
         await connectDB();
 
         const user = await User.findByIdAndUpdate(
-            params.id,
+            id,
             { $set: { status: 'banned' } },
             { new: true }
         );
@@ -44,9 +45,10 @@ export async function POST(
 // DELETE /api/users/[id]/ban - Unban user (admin only)
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const admin = await isAdmin();
         if (!admin) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -55,7 +57,7 @@ export async function DELETE(
         await connectDB();
 
         const user = await User.findByIdAndUpdate(
-            params.id,
+            id,
             { $set: { status: 'active' } },
             { new: true }
         );

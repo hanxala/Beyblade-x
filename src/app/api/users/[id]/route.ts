@@ -6,12 +6,13 @@ import { isAdmin } from '@/lib/admin-auth';
 // GET /api/users/[id] - Get user details
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         await connectDB();
 
-        const user = await User.findById(params.id).lean();
+        const user = await User.findById(id).lean();
 
         if (!user) {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -27,9 +28,10 @@ export async function GET(
 // PATCH /api/users/[id] - Update user (admin only)
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const admin = await isAdmin();
         if (!admin) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -47,7 +49,7 @@ export async function PATCH(
         if (stats) updateData.stats = stats;
 
         const user = await User.findByIdAndUpdate(
-            params.id,
+            id,
             { $set: updateData },
             { new: true, runValidators: true }
         );
@@ -66,9 +68,10 @@ export async function PATCH(
 // DELETE /api/users/[id] - Delete user (admin only)
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const admin = await isAdmin();
         if (!admin) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -76,7 +79,7 @@ export async function DELETE(
 
         await connectDB();
 
-        const user = await User.findByIdAndDelete(params.id);
+        const user = await User.findByIdAndDelete(id);
 
         if (!user) {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });

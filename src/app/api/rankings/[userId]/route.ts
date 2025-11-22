@@ -6,9 +6,10 @@ import { isAdmin } from '@/lib/admin-auth';
 // PATCH /api/rankings/[userId] - Update user points (admin only)
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { userId: string } }
+    { params }: { params: Promise<{ userId: string }> }
 ) {
     try {
+        const { id } = await params;
         const admin = await isAdmin();
         if (!admin) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -26,7 +27,7 @@ export async function PATCH(
         if (tournamentsPlayed !== undefined) updateData['stats.tournamentsPlayed'] = tournamentsPlayed;
 
         const user = await User.findByIdAndUpdate(
-            params.userId,
+            userId,
             { $set: updateData },
             { new: true }
         );
