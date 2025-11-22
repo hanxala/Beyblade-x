@@ -48,6 +48,14 @@ export async function POST(
             return NextResponse.json({ error: 'You are banned from registering' }, { status: 403 });
         }
 
+        // Check if this is a mock tournament
+        if (id.startsWith('mock-tournament-')) {
+            return NextResponse.json({
+                error: 'This is a demo tournament. Please create a real tournament in the admin dashboard to test registration.',
+                isMockTournament: true
+            }, { status: 400 });
+        }
+
         // Get tournament
         const tournament = await Tournament.findById(id);
         if (!tournament) {
