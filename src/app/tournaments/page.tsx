@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import PageHero from '@/components/PageHero';
 import TournamentCard from '@/components/TournamentCard';
 import styles from './page.module.css';
 
@@ -54,14 +55,11 @@ export default function TournamentsPage() {
 
     return (
         <div className={styles.page}>
-            <div className={styles.pageHeader}>
-                <div className="container">
-                    <h1 className="animate-fadeIn">Tournaments</h1>
-                    <p className="animate-fadeIn">
-                        Discover and join Beyblade tournaments happening across India
-                    </p>
-                </div>
-            </div>
+            <PageHero
+                title="Tournaments"
+                subtitle="Discover and join Beyblade tournaments happening across India"
+                backgroundImage="/tournament-arena.png"
+            />
 
             <section className="section">
                 <div className="container">
