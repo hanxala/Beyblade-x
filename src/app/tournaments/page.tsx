@@ -1,116 +1,51 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TournamentCard from '@/components/TournamentCard';
 import styles from './page.module.css';
 
-const allTournaments = [
-    {
-        id: 'mock-tournament-1',
-        title: 'Mumbai Championship 2025',
-        date: 'Dec 25, 2025',
-        location: 'Mumbai, Maharashtra',
-        participants: 45,
-        maxParticipants: 64,
-        status: 'upcoming' as const,
-        prize: '₹50,000',
-        image: '/mumbai-championship.png',
-    },
-    {
-        id: 'mock-tournament-2',
-        title: 'Delhi Battle Royale',
-        date: 'Nov 28, 2025',
-        location: 'Delhi, NCR',
-        participants: 30,
-        maxParticipants: 32,
-        status: 'upcoming' as const,
-        prize: '₹35,000',
-        image: '/delhi-battle.png',
-    },
-    {
-        id: 'mock-tournament-3',
-        title: 'Bangalore Bladers Cup',
-        date: 'Jan 5, 2026',
-        location: 'Bangalore, Karnataka',
-        participants: 28,
-        maxParticipants: 48,
-        status: 'upcoming' as const,
-        prize: '₹40,000',
-        image: '/bangalore-cup.png',
-    },
-    {
-        id: 'mock-tournament-4',
-        title: 'Hyderabad Masters',
-        date: 'Jan 12, 2026',
-        location: 'Hyderabad, Telangana',
-        participants: 20,
-        maxParticipants: 40,
-        status: 'upcoming' as const,
-        prize: '₹30,000',
-        image: '/hyderabad-masters.png',
-    },
-    {
-        id: 'mock-tournament-5',
-        title: 'Pune Championship',
-        date: 'Oct 15, 2025',
-        location: 'Pune, Maharashtra',
-        participants: 32,
-        maxParticipants: 32,
-        status: 'completed' as const,
-        prize: '₹25,000',
-        image: '/pune-championship.png',
-    },
-    {
-        id: 'mock-tournament-6',
-        title: 'Chennai Showdown',
-        date: 'Jan 18, 2026',
-        location: 'Chennai, Tamil Nadu',
-        participants: 15,
-        maxParticipants: 48,
-        status: 'upcoming' as const,
-        prize: '₹35,000',
-        image: '/chennai-showdown.png',
-    },
-    {
-        id: 'mock-tournament-7',
-        title: 'Kolkata Battle Arena',
-        date: 'Oct 10, 2025',
-        location: 'Kolkata, West Bengal',
-        participants: 24,
-        maxParticipants: 24,
-        status: 'completed' as const,
-        prize: '₹20,000',
-        image: '/kolkata-battle.png',
-    },
-    {
-        id: 'mock-tournament-8',
-        title: 'Ahmedabad Clash',
-        date: 'Jan 22, 2026',
-        location: 'Ahmedabad, Gujarat',
-        participants: 18,
-        maxParticipants: 40,
-        status: 'upcoming' as const,
-        prize: '₹28,000',
-        image: '/ahmedabad-clash.png',
-    },
-    {
-        id: 'mock-tournament-9',
-        title: 'Jaipur Royale',
-        date: 'Feb 1, 2026',
-        location: 'Jaipur, Rajasthan',
-        participants: 12,
-        maxParticipants: 32,
-        status: 'upcoming' as const,
-        prize: '₹22,000',
-        image: '/jaipur-royale.png',
-    },
-];
+interface Tournament {
+    _id: string;
+    title: string;
+    date: string;
+    location: string;
+    currentParticipants: number;
+    maxParticipants: number;
+    status: 'upcoming' | 'live' | 'completed';
+    prize?: string;
+    imageUrl?: string;
+}
 
 export default function TournamentsPage() {
+    const [tournaments, setTournaments] = useState<Tournament[]>([]);
+    const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<'all' | 'upcoming' | 'live' | 'completed'>('all');
     const [searchTerm, setSearchTerm] = useState('');
 
-    const filteredTournaments = allTournaments.filter(tournament => {
+    useEffect(() => {
+        fetchTournaments();
+    }, []);
+
+    const fetchTournaments = async () => {
+        try {
+            const response = await fetch('/api/tournaments');
+            if (response.ok) {
+                const data = await response.json();
+                setTournaments(data.tournaments || []);
+            }
+        } catch (error) {
+            console.error('Error fetching tournaments:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    };
+
+    const filteredTournaments = tournaments.filter(tournament => {
         const matchesFilter = filter === 'all' || tournament.status === filter;
         const matchesSearch = tournament.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             tournament.location.toLowerCase().includes(searchTerm.toLowerCase());
@@ -175,18 +110,37 @@ export default function TournamentsPage() {
                     </div>
 
                     {/* Tournament Grid */}
-                    <div className="grid grid-3">
-                        {filteredTournaments.map((tournament, index) => (
-                            <div key={index} className="animate-fadeIn" style={{ animationDelay: `${index * 0.05}s` }}>
-                                <TournamentCard {...tournament} />
-                            </div>
-                        ))}
-                    </div>
-
-                    {filteredTournaments.length === 0 && (
-                        <div className={styles.noResults}>
-                            <p>No tournaments found matching your criteria.</p>
+                    {loading ? (
+                        <div className={styles.loading}>
+                            <div className={styles.spinner}></div>
+                            <p>Loading tournaments...</p>
                         </div>
+                    ) : (
+                        <>
+                            <div className="grid grid-3">
+                                {filteredTournaments.map((tournament, index) => (
+                                    <div key={tournament._id} className="animate-fadeIn" style={{ animationDelay: `${index * 0.05}s` }}>
+                                        <TournamentCard
+                                            id={tournament._id}
+                                            title={tournament.title}
+                                            date={formatDate(tournament.date)}
+                                            location={tournament.location}
+                                            participants={tournament.currentParticipants}
+                                            maxParticipants={tournament.maxParticipants}
+                                            status={tournament.status}
+                                            prize={tournament.prize}
+                                            image={tournament.imageUrl}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+
+                            {filteredTournaments.length === 0 && (
+                                <div className={styles.noResults}>
+                                    <p>No tournaments found matching your criteria.</p>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </section>
