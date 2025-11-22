@@ -5,6 +5,7 @@ import styles from './page.module.css';
 
 const featuredTournaments = [
   {
+    id: 'mock-tournament-1',
     title: 'Mumbai Championship 2025',
     date: 'Jan 25, 2025',
     location: 'Mumbai, Maharashtra',
@@ -15,6 +16,7 @@ const featuredTournaments = [
     image: '/mumbai-championship.png',
   },
   {
+    id: 'mock-tournament-2',
     title: 'Delhi Battle Royale',
     date: 'Jan 20, 2025',
     location: 'Delhi, NCR',
@@ -25,6 +27,7 @@ const featuredTournaments = [
     image: '/delhi-battle.png',
   },
   {
+    id: 'mock-tournament-3',
     title: 'Bangalore Bladers Cup',
     date: 'Feb 5, 2025',
     location: 'Bangalore, Karnataka',
