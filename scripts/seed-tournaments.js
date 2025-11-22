@@ -1,6 +1,41 @@
-import connectDB from '../src/lib/mongodb.js';
-import Tournament from '../src/models/Tournament.js';
-import User from '../src/models/User.js';
+require('dotenv').config({ path: '.env.local' });
+const mongoose = require('mongoose');
+
+// MongoDB Connection
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+    console.error('❌ MONGODB_URI not found in .env.local');
+    process.exit(1);
+}
+
+// User Schema
+const userSchema = new mongoose.Schema({
+    clerkId: String,
+    email: String,
+    name: String,
+    role: String,
+    status: String,
+});
+
+const User = mongoose.models.User || mongoose.model('User', userSchema);
+
+// Tournament Schema
+const tournamentSchema = new mongoose.Schema({
+    title: String,
+    description: String,
+    date: Date,
+    location: String,
+    maxParticipants: Number,
+    currentParticipants: Number,
+    prize: String,
+    registrationDeadline: Date,
+    imageUrl: String,
+    status: String,
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+}, { timestamps: true });
+
+const Tournament = mongoose.models.Tournament || mongoose.model('Tournament', tournamentSchema);
 
 const tournaments = [
     {
@@ -116,11 +151,11 @@ const tournaments = [
 async function seedTournaments() {
     try {
         console.log('🔄 Connecting to MongoDB...');
-        await connectDB();
-        console.log('✅ Connected to MongoDB');
+        await mongoose.connect(MONGODB_URI);
+        console.log('✅ Connected to MongoDB\n');
 
         // Find an admin user or create one
-        console.log('\n🔍 Looking for admin user...');
+        console.log('🔍 Looking for admin user...');
         let admin = await User.findOne({ role: 'admin' });
 
         if (!admin) {
@@ -129,7 +164,8 @@ async function seedTournaments() {
 
             if (!admin) {
                 console.log('❌ No users found in database!');
-                console.log('💡 Please sign up on the website first, then run this script again.');
+                console.log('💡 Please sign up on the website first, then run this script again.\n');
+                await mongoose.connection.close();
                 process.exit(1);
             }
 
@@ -137,18 +173,18 @@ async function seedTournaments() {
             console.log('⬆️  Upgrading user to admin...');
             admin.role = 'admin';
             await admin.save();
-            console.log('✅ User upgraded to admin');
+            console.log('✅ User upgraded to admin\n');
         } else {
-            console.log(`✅ Found admin user: ${admin.email}`);
+            console.log(`✅ Found admin user: ${admin.email}\n`);
         }
 
         // Clear existing tournaments (optional)
-        console.log('\n🗑️  Clearing existing tournaments...');
+        console.log('🗑️  Clearing existing tournaments...');
         const deleteResult = await Tournament.deleteMany({});
-        console.log(`✅ Deleted ${deleteResult.deletedCount} existing tournaments`);
+        console.log(`✅ Deleted ${deleteResult.deletedCount} existing tournaments\n`);
 
         // Create tournaments
-        console.log('\n🎯 Creating tournaments...\n');
+        console.log('🎯 Creating tournaments...\n');
         const createdTournaments = [];
 
         for (let i = 0; i < tournaments.length; i++) {
@@ -181,9 +217,12 @@ async function seedTournaments() {
         console.log('✨ You can now register for these tournaments!');
         console.log('🌐 Visit: http://localhost:3000/tournaments\n');
 
+        await mongoose.connection.close();
+        console.log('✅ Database connection closed');
         process.exit(0);
     } catch (error) {
         console.error('\n❌ Error seeding tournaments:', error);
+        await mongoose.connection.close();
         process.exit(1);
     }
 }
