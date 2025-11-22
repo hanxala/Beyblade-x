@@ -8,7 +8,7 @@ const allTournaments = [
     {
         id: 'mock-tournament-1',
         title: 'Mumbai Championship 2025',
-        date: 'Jan 25, 2025',
+        date: 'Dec 25, 2025',
         location: 'Mumbai, Maharashtra',
         participants: 45,
         maxParticipants: 64,
@@ -19,18 +19,18 @@ const allTournaments = [
     {
         id: 'mock-tournament-2',
         title: 'Delhi Battle Royale',
-        date: 'Jan 20, 2025',
+        date: 'Nov 28, 2025',
         location: 'Delhi, NCR',
-        participants: 32,
+        participants: 30,
         maxParticipants: 32,
-        status: 'live' as const,
+        status: 'upcoming' as const,
         prize: '₹35,000',
         image: '/delhi-battle.png',
     },
     {
         id: 'mock-tournament-3',
         title: 'Bangalore Bladers Cup',
-        date: 'Feb 5, 2025',
+        date: 'Jan 5, 2026',
         location: 'Bangalore, Karnataka',
         participants: 28,
         maxParticipants: 48,
@@ -41,7 +41,7 @@ const allTournaments = [
     {
         id: 'mock-tournament-4',
         title: 'Hyderabad Masters',
-        date: 'Feb 12, 2025',
+        date: 'Jan 12, 2026',
         location: 'Hyderabad, Telangana',
         participants: 20,
         maxParticipants: 40,
@@ -52,7 +52,7 @@ const allTournaments = [
     {
         id: 'mock-tournament-5',
         title: 'Pune Championship',
-        date: 'Jan 15, 2025',
+        date: 'Oct 15, 2025',
         location: 'Pune, Maharashtra',
         participants: 32,
         maxParticipants: 32,
@@ -63,7 +63,7 @@ const allTournaments = [
     {
         id: 'mock-tournament-6',
         title: 'Chennai Showdown',
-        date: 'Feb 18, 2025',
+        date: 'Jan 18, 2026',
         location: 'Chennai, Tamil Nadu',
         participants: 15,
         maxParticipants: 48,
@@ -74,7 +74,7 @@ const allTournaments = [
     {
         id: 'mock-tournament-7',
         title: 'Kolkata Battle Arena',
-        date: 'Jan 10, 2025',
+        date: 'Oct 10, 2025',
         location: 'Kolkata, West Bengal',
         participants: 24,
         maxParticipants: 24,
@@ -85,7 +85,7 @@ const allTournaments = [
     {
         id: 'mock-tournament-8',
         title: 'Ahmedabad Clash',
-        date: 'Feb 22, 2025',
+        date: 'Jan 22, 2026',
         location: 'Ahmedabad, Gujarat',
         participants: 18,
         maxParticipants: 40,
@@ -96,7 +96,7 @@ const allTournaments = [
     {
         id: 'mock-tournament-9',
         title: 'Jaipur Royale',
-        date: 'Mar 1, 2025',
+        date: 'Feb 1, 2026',
         location: 'Jaipur, Rajasthan',
         participants: 12,
         maxParticipants: 32,
