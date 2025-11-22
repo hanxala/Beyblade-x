@@ -1,0 +1,79 @@
+.activityFeed {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.activityList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.activityItem {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+}
+
+.activityIcon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    flex-shrink: 0;
+}
+
+.activityContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.activityDescription {
+    color: var(--color-text-primary);
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+}
+
+.activityTime {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+}
+
+.emptyState {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+}
+
+.emptyIcon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
+    opacity: 0.5;
+}
+
+.emptyText {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+}
+
+/* Scrollbar */
+.activityFeed::-webkit-scrollbar {
+    width: 6px;
+}
+
+.activityFeed::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.activityFeed::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.activityFeed::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}

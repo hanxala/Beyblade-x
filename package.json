@@ -6,12 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.35.3",
+    "cloudinary": "^2.5.1",
+    "dotenv": "^17.2.3",
+    "inngest": "^3.22.0",
+    "mongoose": "^8.20.1",
     "next": "16.0.3",
+    "next-cloudinary": "^6.14.1",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "svix": "^1.81.0"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -20,6 +28,7 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
+    "tsx": "^4.20.6",
     "typescript": "^5"
   }
 }

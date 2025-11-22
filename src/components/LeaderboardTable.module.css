@@ -1,0 +1,181 @@
+.tableContainer {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tableWrapper {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background: var(--color-bg-tertiary);
+}
+
+.table thead th {
+    padding: var(--spacing-md);
+    text-align: left;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--color-primary);
+}
+
+.table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all var(--transition-fast);
+}
+
+.table tbody tr:hover {
+    background: var(--color-bg-tertiary);
+    transform: scale(1.01);
+}
+
+.table tbody td {
+    padding: var(--spacing-md);
+    color: var(--color-text-secondary);
+}
+
+.rankCell {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.rankBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-tertiary);
+}
+
+.rank1 {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.1), transparent);
+}
+
+.rank1 .rankBadge {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    font-size: 1.5rem;
+}
+
+.rank2 {
+    background: linear-gradient(90deg, rgba(192, 192, 192, 0.1), transparent);
+}
+
+.rank2 .rankBadge {
+    background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+    font-size: 1.5rem;
+}
+
+.rank3 {
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.1), transparent);
+}
+
+.rank3 .rankBadge {
+    background: linear-gradient(135deg, #CD7F32, #B8860B);
+    font-size: 1.5rem;
+}
+
+.playerCell {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.playerAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+}
+
+.playerName {
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.pointsCell {
+    font-weight: 700;
+    color: var(--color-primary);
+    font-size: 1.1rem;
+}
+
+.winsCell {
+    color: var(--color-secondary);
+    font-weight: 600;
+}
+
+.lossesCell {
+    color: var(--color-text-muted);
+}
+
+.winRateContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.winRateText {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+}
+
+.winRateBar {
+    width: 100px;
+    height: 6px;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.winRateFill {
+    height: 100%;
+    background: var(--gradient-secondary);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-slow);
+}
+
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.9rem;
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: var(--spacing-sm);
+    }
+
+    .playerAvatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+
+    .rankBadge {
+        min-width: 32px;
+        height: 32px;
+    }
+
+    .winRateBar {
+        width: 60px;
+    }
+}
