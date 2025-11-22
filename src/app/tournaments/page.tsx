@@ -6,6 +6,7 @@ import styles from './page.module.css';
 
 const allTournaments = [
     {
+        id: 'mock-tournament-1',
         title: 'Mumbai Championship 2025',
         date: 'Jan 25, 2025',
         location: 'Mumbai, Maharashtra',
@@ -15,6 +16,7 @@ const allTournaments = [
         prize: '₹50,000',
     },
     {
+        id: 'mock-tournament-2',
         title: 'Delhi Battle Royale',
         date: 'Jan 20, 2025',
         location: 'Delhi, NCR',
@@ -24,6 +26,7 @@ const allTournaments = [
         prize: '₹35,000',
     },
     {
+        id: 'mock-tournament-3',
         title: 'Bangalore Bladers Cup',
         date: 'Feb 5, 2025',
         location: 'Bangalore, Karnataka',
@@ -33,6 +36,7 @@ const allTournaments = [
         prize: '₹40,000',
     },
     {
+        id: 'mock-tournament-4',
         title: 'Hyderabad Masters',
         date: 'Feb 12, 2025',
         location: 'Hyderabad, Telangana',
@@ -42,6 +46,7 @@ const allTournaments = [
         prize: '₹30,000',
     },
     {
+        id: 'mock-tournament-5',
         title: 'Pune Championship',
         date: 'Jan 15, 2025',
         location: 'Pune, Maharashtra',
@@ -51,6 +56,7 @@ const allTournaments = [
         prize: '₹25,000',
     },
     {
+        id: 'mock-tournament-6',
         title: 'Chennai Showdown',
         date: 'Feb 18, 2025',
         location: 'Chennai, Tamil Nadu',
@@ -60,6 +66,7 @@ const allTournaments = [
         prize: '₹35,000',
     },
     {
+        id: 'mock-tournament-7',
         title: 'Kolkata Battle Arena',
         date: 'Jan 10, 2025',
         location: 'Kolkata, West Bengal',
@@ -69,6 +76,7 @@ const allTournaments = [
         prize: '₹20,000',
     },
     {
+        id: 'mock-tournament-8',
         title: 'Ahmedabad Clash',
         date: 'Feb 22, 2025',
         location: 'Ahmedabad, Gujarat',
@@ -78,6 +86,7 @@ const allTournaments = [
         prize: '₹28,000',
     },
     {
+        id: 'mock-tournament-9',
         title: 'Jaipur Royale',
         date: 'Mar 1, 2025',
         location: 'Jaipur, Rajasthan',
