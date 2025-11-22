@@ -44,13 +44,72 @@ export default function TournamentDetailPage({ params }: { params: Promise<{ id:
 
     const fetchTournament = async (id: string) => {
         try {
+            // Check if it's a mock tournament ID
+            if (id.startsWith('mock-tournament-')) {
+                // Use mock data for development
+                const mockTournaments: Record<string, any> = {
+                    'mock-tournament-1': {
+                        _id: 'mock-tournament-1',
+                        title: 'Mumbai Championship 2025',
+                        description: 'Join us for the biggest Beyblade tournament in Mumbai! Compete against the best bladers in Maharashtra for glory and amazing prizes. This championship features multiple rounds, expert judges, and an electrifying atmosphere.',
+                        date: '2025-01-25',
+                        location: 'Mumbai, Maharashtra',
+                        maxParticipants: 64,
+                        currentParticipants: 45,
+                        prize: '₹50,000',
+                        registrationDeadline: '2025-01-20',
+                        imageUrl: '/mumbai-championship.png',
+                        status: 'upcoming' as const,
+                        createdBy: { name: 'Tournament Admin', email: 'admin@beyblade-x.com' }
+                    },
+                    'mock-tournament-2': {
+                        _id: 'mock-tournament-2',
+                        title: 'Delhi Battle Royale',
+                        description: 'The ultimate Beyblade showdown in the capital! Watch as Delhi\'s finest bladers clash in an epic battle for supremacy. Live streaming available!',
+                        date: '2025-01-20',
+                        location: 'Delhi, NCR',
+                        maxParticipants: 32,
+                        currentParticipants: 32,
+                        prize: '₹35,000',
+                        registrationDeadline: '2025-01-18',
+                        imageUrl: '/delhi-battle.png',
+                        status: 'live' as const,
+                        createdBy: { name: 'Tournament Admin', email: 'admin@beyblade-x.com' }
+                    },
+                    'mock-tournament-3': {
+                        _id: 'mock-tournament-3',
+                        title: 'Bangalore Bladers Cup',
+                        description: 'Tech city meets Beyblade! Bangalore\'s premier tournament featuring cutting-edge arena technology and the best bladers from Karnataka.',
+                        date: '2025-02-05',
+                        location: 'Bangalore, Karnataka',
+                        maxParticipants: 48,
+                        currentParticipants: 28,
+                        prize: '₹40,000',
+                        registrationDeadline: '2025-02-01',
+                        imageUrl: '/bangalore-cup.png',
+                        status: 'upcoming' as const,
+                        createdBy: { name: 'Tournament Admin', email: 'admin@beyblade-x.com' }
+                    },
+                };
+
+                const mockTournament = mockTournaments[id];
+                if (mockTournament) {
+                    setTournament(mockTournament);
+                    if (user) {
+                        checkRegistration(id);
+                    }
+                    setLoading(false);
+                    return;
+                }
+            }
+
+            // Try to fetch from API
             const response = await fetch(`/api/tournaments/${id}`);
-            if (!response.ok) throw new Error('Failed to fetch tournament');
+            if (!response.ok) throw new Error('Tournament not found');
 
             const data = await response.json();
             setTournament(data.tournament);
 
-            // Check if user is registered (you'll need to implement this API)
             if (user) {
                 checkRegistration(id);
             }
