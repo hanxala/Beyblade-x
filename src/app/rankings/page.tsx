@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import PageHero from '@/components/PageHero';
 import LeaderboardTable from '@/components/LeaderboardTable';
 import styles from './page.module.css';
 
@@ -33,14 +34,11 @@ export default function RankingsPage() {
 
     return (
         <div className={styles.page}>
-            <div className={styles.pageHeader}>
-                <div className="container">
-                    <h1 className="animate-fadeIn">Player Rankings</h1>
-                    <p className="animate-fadeIn">
-                        Top Beyblade bladers competing across India
-                    </p>
-                </div>
-            </div>
+            <PageHero
+                title="Player Rankings"
+                subtitle="Top Beyblade bladers competing across India"
+                backgroundImage="/beyblade-action.png"
+            />
 
             <section className="section">
                 <div className="container">

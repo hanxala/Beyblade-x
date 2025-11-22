@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import PageHero from '@/components/PageHero';
 import styles from './page.module.css';
 
 export default function ContactPage() {
@@ -27,14 +28,11 @@ export default function ContactPage() {
 
     return (
         <div className={styles.page}>
-            <div className={styles.pageHeader}>
-                <div className="container">
-                    <h1 className="animate-fadeIn">Contact Us</h1>
-                    <p className="animate-fadeIn">
-                        Have questions? We'd love to hear from you!
-                    </p>
-                </div>
-            </div>
+            <PageHero
+                title="Contact Us"
+                subtitle="Have questions? We'd love to hear from you!"
+                backgroundImage="/mumbai-championship.png"
+            />
 
             <section className="section">
                 <div className="container">

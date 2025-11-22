@@ -1,16 +1,14 @@
+import PageHero from '@/components/PageHero';
 import styles from './page.module.css';
 
 export default function AboutPage() {
     return (
         <div className={styles.page}>
-            <div className={styles.pageHeader}>
-                <div className="container">
-                    <h1 className="animate-fadeIn">About Beyblade-X</h1>
-                    <p className="animate-fadeIn">
-                        India's premier platform for Beyblade tournaments and community
-                    </p>
-                </div>
-            </div>
+            <PageHero
+                title="About Beyblade-X"
+                subtitle="India's premier platform for Beyblade tournaments and community"
+                backgroundImage="/delhi-battle.png"
+            />
 
             <section className="section">
                 <div className="container">
